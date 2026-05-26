@@ -1,0 +1,17 @@
+Installed plugins:
+
+  ❯ truth-serum@truth-serum-marketplace
+    Version: 0.6.1
+    Scope: user
+    Status: ✔ enabled
+
+  ❯ context7@claude-plugins-official
+    Version: unknown
+    Scope: user
+    Status: ✔ enabled
+
+  ❯ failing-one@claude-plugins-official
+    Version: 0.1.0
+    Scope: user
+    Status: ✘ failed to load
+    Error: something broken

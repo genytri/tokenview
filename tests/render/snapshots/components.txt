@@ -1,0 +1,9 @@
+                        Top 5 components this session                        
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Plugin          ┃ Component     ┃ Type  ┃ Invs ┃ Est tokens ⚠ ┃ % session ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━┩
+│ superpowers     │ brainstorming │ skill │    1 │        3,200 │     25.6% │
+│ truth-serum     │ lie-detector  │ skill │    3 │        4,800 │     38.4% │
+│ chrome-devtools │ navigate_page │ mcp   │    2 │          420 │      3.4% │
+└─────────────────┴───────────────┴───────┴──────┴──────────────┴───────────┘
+Estimates = invocations × manifest on-invoke cost.

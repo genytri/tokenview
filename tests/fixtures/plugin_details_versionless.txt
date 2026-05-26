@@ -1,0 +1,17 @@
+context7
+  Long-context library documentation lookup.
+  Source: context7@claude-plugins-official
+
+Component inventory
+  Skills (0)
+  Agents (0)
+  Hooks (0)
+  MCP servers (1)  context7
+  LSP servers (0)
+
+Projected token cost
+  Always-on:   ~120 tok   added to every session
+
+Per-component (rounded)
+  component     always-on  on-invoke
+  context7           ~120        ~0

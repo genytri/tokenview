@@ -1,0 +1,19 @@
+{
+  "name": "tokenview-marketplace",
+  "description": "Visibility into Claude Code token consumption per session.",
+  "owner": {
+    "name": "Yassir Ait El Aizzi",
+    "email": "yassir.aitelaizzi@gmail.com",
+    "url": "https://github.com/genytri"
+  },
+  "plugins": [
+    {
+      "name": "tokenview",
+      "source": "./plugins/tokenview",
+      "version": "0.1.6",
+      "description": "Shows where your Claude Code session tokens go: budget composition, per-component costs, per-turn timeline, live watch mode.",
+      "category": "observability",
+      "tags": ["tokens", "telemetry", "observability", "claude-code", "diagnostics"]
+    }
+  ]
+}
