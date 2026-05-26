@@ -1,0 +1,21 @@
+truth-serum 0.6.1
+  Multi-language verification of AI-generated code (Python, JavaScript, TypeScript).
+  Source: truth-serum@truth-serum-marketplace
+
+Component inventory
+  Skills (1)  lie-detector
+  Agents (1)  auditor
+  Hooks (3)  UserPromptSubmit, PostToolUse, Stop  (harness-only — no model context cost)
+  MCP servers (0)
+  LSP servers (0)
+
+Projected token cost
+  Always-on:   ~243 tok   added to every session
+
+Per-component (rounded)
+  component     always-on  on-invoke
+  lie-detector       ~240      ~1.6k
+  auditor              ~3      ~2.4k
+
+  On-invoke cost is paid each time a skill or agent fires.
+  Token counts are estimates and may differ from actual usage.
