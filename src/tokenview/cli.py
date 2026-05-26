@@ -97,7 +97,7 @@ def _cmd_timeline(args: argparse.Namespace, console: Console) -> int:
 
 def _cmd_watch(args: argparse.Namespace, console: Console) -> int:
     # Local import: defers watchdog load and tolerates Task 18 not landed yet.
-    from tokenview.watch import run_watch  # type: ignore[import-untyped]
+    from tokenview.watch import run_watch
 
     plugins = _load_plugins(_is_offline())
     return int(
