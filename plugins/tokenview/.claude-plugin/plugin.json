@@ -1,0 +1,17 @@
+{
+  "name": "tokenview",
+  "version": "0.1.0",
+  "description": "Shows where your Claude Code session tokens go: budget composition, per-component costs, per-turn timeline, live watch mode.",
+  "author": {
+    "name": "Yassir Ait El Aizzi",
+    "email": "yassir.aitelaizzi@gmail.com",
+    "url": "https://github.com/genytri"
+  },
+  "homepage": "https://github.com/genytri/tokenview",
+  "repository": "https://github.com/genytri/tokenview",
+  "license": "MIT",
+  "keywords": ["tokens", "telemetry", "observability", "claude-code", "diagnostics"],
+  "commands": [
+    "./commands/tokens.md"
+  ]
+}
