@@ -17,6 +17,10 @@ def compute_budget(
 
     Anchoring on the first turn lets us solve for the Claude Code base prompt:
         base = observed_input - (plugins_always_on + mcp_defs + claude_md + conversation)
+
+    `conversation_so_far` is 0 on the first turn (no prior assistant messages have
+    been added to context yet). For multi-turn analysis showing how conversation
+    grows, use the Timeline view instead.
     """
     if not session.turns:
         raise ValueError("Session has no assistant turns; cannot compute budget.")
@@ -25,6 +29,7 @@ def compute_budget(
     total_observed = first.usage.total_input
     plugins_always_on = sum(p.always_on_tokens for p in plugins)
     mcp_tool_definitions = sum(estimate_mcp_tokens(s) for s in mcp_servers)
+    # First-turn anchor: no prior assistant messages exist in context yet.
     conversation_so_far = 0
 
     known = plugins_always_on + mcp_tool_definitions + claude_md_tokens + conversation_so_far

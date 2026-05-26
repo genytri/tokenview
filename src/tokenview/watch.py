@@ -52,6 +52,7 @@ def run_watch(
     session_file: str | None,
     session_id: str | None,
     plugins: list[Plugin],
+    claude_md_tokens: int,
     console: Console,
 ) -> int:
     target = _resolve_session_path(session_file, session_id)
@@ -75,7 +76,7 @@ def run_watch(
                     session=session,
                     plugins=plugins,
                     mcp_servers=[],
-                    claude_md_tokens=0,
+                    claude_md_tokens=claude_md_tokens,
                 )
                 timeline = build_timeline(session)
                 components = aggregate_components(session, plugins)

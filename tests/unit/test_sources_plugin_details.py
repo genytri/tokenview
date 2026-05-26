@@ -26,3 +26,12 @@ def test_parse_truth_serum_details(fixtures_dir: Path) -> None:
 
     # Hooks excluded — no model context cost
     assert "UserPromptSubmit" not in by_name
+
+
+def test_parse_versionless_header(fixtures_dir: Path) -> None:
+    """Plugins whose first line has only a name (no version) should still parse."""
+    text = (fixtures_dir / "plugin_details_versionless.txt").read_text()
+    plugin = parse_details_output(text, marketplace="claude-plugins-official")
+    assert plugin.name == "context7"
+    assert plugin.version == "unknown"  # default when not present
+    assert plugin.always_on_tokens == 120

@@ -17,6 +17,7 @@ from tokenview.models import Plugin, Session
 from tokenview.render.budget_view import render_budget
 from tokenview.render.components_view import render_components
 from tokenview.render.timeline_view import render_timeline
+from tokenview.sources.claude_md import count_markdown_tokens, walk_claude_md_files
 from tokenview.sources.jsonl import parse_session
 from tokenview.sources.plugin_details import fetch_plugin_details
 from tokenview.sources.plugin_list import fetch_enabled_plugin_ids
@@ -41,6 +42,18 @@ def _load_session(session_file: str | None, session_id: str | None) -> Session:
             raise SystemExit(f"Session id '{session_id}' not found")
         return parse_session(matches[0])
     return parse_session(_latest_session_file())
+
+
+def _load_claude_md_tokens(start: Path | None = None) -> int:
+    """Sum tiktoken count of CLAUDE.md files walked from start up to filesystem root."""
+    base = (start or Path.cwd()).resolve()
+    total = 0
+    for path in walk_claude_md_files(base):
+        try:
+            total += count_markdown_tokens(path)
+        except OSError:
+            continue
+    return total
 
 
 def _load_plugins(offline: bool) -> list[Plugin]:
@@ -74,7 +87,7 @@ def _cmd_budget(args: argparse.Namespace, console: Console) -> int:
         session=session,
         plugins=plugins,
         mcp_servers=[],
-        claude_md_tokens=0,
+        claude_md_tokens=_load_claude_md_tokens(),
     )
     render_budget(console=console, breakdown=breakdown, session_id=session.session_id[:8])
     return 0
@@ -105,6 +118,7 @@ def _cmd_watch(args: argparse.Namespace, console: Console) -> int:
             session_file=args.session_file,
             session_id=args.session,
             plugins=plugins,
+            claude_md_tokens=_load_claude_md_tokens(),
             console=console,
         )
     )

@@ -7,7 +7,7 @@ import subprocess
 
 from tokenview.models import Plugin, PluginComponent, PluginComponentType
 
-_HEADER_RE = re.compile(r"^(?P<name>\S+)\s+(?P<version>\S+)$")
+_SOURCE_RE = re.compile(r"^\s*Source:\s+(?P<id>\S+@\S+)\s*$")
 _ALWAYS_ON_RE = re.compile(r"Always-on:\s+~?(?P<n>[\d.]+)(?P<unit>[kKmM]?)\s*tok")
 _COMPONENT_LINE_RE = re.compile(
     r"^\s*(?P<name>\S+)\s+~?(?P<ao>[\d.]+)(?P<aou>[kKmM]?)\s+~?(?P<oi>[\d.]+)(?P<oiu>[kKmM]?)\s*$"
@@ -40,13 +40,27 @@ def parse_details_output(text: str, *, marketplace: str) -> Plugin:
     lines = text.splitlines()
 
     name = ""
-    version = ""
+    version = "unknown"
+
+    # The first non-empty, non-indented line is the header.
+    # Format observed: "<name> <version>" or just "<name>".
     for line in lines:
-        m = _HEADER_RE.match(line.strip())
-        if m and not line.startswith(" "):
-            name = m.group("name")
-            version = m.group("version")
-            break
+        if not line.strip() or line.startswith(" "):
+            continue
+        parts = line.strip().split(None, 1)
+        name = parts[0]
+        if len(parts) > 1:
+            version = parts[1].strip()
+        break
+
+    # If the header line didn't yield a name (extremely unlikely),
+    # fall back to the "Source: name@marketplace" line.
+    if not name:
+        for line in lines:
+            m = _SOURCE_RE.match(line)
+            if m:
+                name, _, _ = m.group("id").partition("@")
+                break
 
     always_on = 0
     for line in lines:
