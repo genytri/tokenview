@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from rich.console import Console
 
+from tokenview.analyze.timeline import TimelineRow
 from tokenview.models import BudgetBreakdown, ComponentUsage
 from tokenview.render.budget_view import render_budget
 from tokenview.render.components_view import render_components
+from tokenview.render.timeline_view import render_timeline
 
 SNAPSHOT_DIR = Path(__file__).parent / "snapshots"
 
@@ -68,6 +71,50 @@ def test_render_components_snapshot() -> None:
     ]
     out = _capture(render_components, rows=rows, top=5, session_total=12500)
     snapshot = SNAPSHOT_DIR / "components.txt"
+    if not snapshot.exists():
+        snapshot.write_text(out)
+    assert out == snapshot.read_text()
+
+
+def test_render_timeline_snapshot() -> None:
+    ts = datetime(2026, 5, 26, tzinfo=timezone.utc)
+    rows = [
+        TimelineRow(
+            turn_index=0,
+            timestamp=ts,
+            input_new=12,
+            cache_read=1000,
+            cache_write=500,
+            output=50,
+            total=1562,
+            cumulative=1562,
+            is_spike=False,
+        ),
+        TimelineRow(
+            turn_index=1,
+            timestamp=ts,
+            input_new=3,
+            cache_read=2000,
+            cache_write=0,
+            output=20,
+            total=2023,
+            cumulative=3585,
+            is_spike=False,
+        ),
+        TimelineRow(
+            turn_index=2,
+            timestamp=ts,
+            input_new=8,
+            cache_read=300,
+            cache_write=10000,
+            output=180,
+            total=10488,
+            cumulative=14073,
+            is_spike=True,
+        ),
+    ]
+    out = _capture(render_timeline, rows=rows, last=10)
+    snapshot = SNAPSHOT_DIR / "timeline.txt"
     if not snapshot.exists():
         snapshot.write_text(out)
     assert out == snapshot.read_text()
