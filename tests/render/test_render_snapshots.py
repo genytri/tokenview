@@ -8,8 +8,9 @@ from typing import Any
 
 from rich.console import Console
 
-from tokenview.models import BudgetBreakdown
+from tokenview.models import BudgetBreakdown, ComponentUsage
 from tokenview.render.budget_view import render_budget
+from tokenview.render.components_view import render_components
 
 SNAPSHOT_DIR = Path(__file__).parent / "snapshots"
 
@@ -39,3 +40,34 @@ def test_render_budget_snapshot() -> None:
     assert out == snapshot.read_text(), (
         f"Snapshot mismatch. Delete {snapshot} and re-run if intentional."
     )
+
+
+def test_render_components_snapshot() -> None:
+    rows = [
+        ComponentUsage(
+            plugin="superpowers",
+            component="brainstorming",
+            component_type="skill",
+            invocations=1,
+            estimated_tokens=3200,
+        ),
+        ComponentUsage(
+            plugin="truth-serum",
+            component="lie-detector",
+            component_type="skill",
+            invocations=3,
+            estimated_tokens=4800,
+        ),
+        ComponentUsage(
+            plugin="chrome-devtools",
+            component="navigate_page",
+            component_type="mcp",
+            invocations=2,
+            estimated_tokens=420,
+        ),
+    ]
+    out = _capture(render_components, rows=rows, top=5, session_total=12500)
+    snapshot = SNAPSHOT_DIR / "components.txt"
+    if not snapshot.exists():
+        snapshot.write_text(out)
+    assert out == snapshot.read_text()
